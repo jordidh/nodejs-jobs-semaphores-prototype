@@ -8,9 +8,9 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 
-var Mutex = require('async-mutex').Mutex;
-var Semaphore = require('async-mutex').Semaphore;
-var withTimeout = require('async-mutex').withTimeout;
+//var Mutex = require('async-mutex').Mutex;
+//var Semaphore = require('async-mutex').Semaphore;
+//var withTimeout = require('async-mutex').withTimeout;
 
 
 var app = express();
@@ -29,12 +29,14 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 //*** JOBS */
-const semaphore = new Semaphore(1);  // 1 maximum concurrent consumer
+//const semaphore = new Semaphore(1);  // 1 maximum concurrent consumer
+var MySemaphore = require('./api/semaphore');
+var semaphore = new MySemaphore().getInstance();
 
 var job5s = require('./api/job5s');
-job5s.start(semaphore);
+job5s.start(semaphore.getA());
 var job10s = require('./api/job10s');
-job10s.start(semaphore);
+job10s.start(semaphore.getA());
 
 
 // catch 404 and forward to error handler

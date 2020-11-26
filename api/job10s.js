@@ -1,5 +1,7 @@
 const CronJob = require('cron').CronJob;
 
+const MS_INSIDE_SEMAPHORE = 5000;
+
 var mySemaphore = null;
 
 const JOB = new CronJob('*/10 * * * * *', async function () {
@@ -8,7 +10,7 @@ const JOB = new CronJob('*/10 * * * * *', async function () {
     const [value, release] = await mySemaphore.acquire();
     try {
         console.log((new Date()).toISOString() + ' - job10s semaphore acquired');
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, MS_INSIDE_SEMAPHORE));
     } catch(ex) {
         console.log((new Date()).toISOString() + ' - job10s exception', ex);
     } finally {
