@@ -14,17 +14,17 @@ router.get('/', function(req, res, next) {
 
 /* GET home page. */
 router.get('/semaphore', function(req, res, next) {
-  console.log((new Date()).toISOString() + ' - /sempaphore start');
+  console.log((new Date()).toISOString() + ' - /get start');
 
   semaphore.getA()
     .acquire()
     .then(function(result) {
-      console.log((new Date()).toISOString() + ' - /sempaphore semaphore acquired');
+      console.log((new Date()).toISOString() + ' - /get semaphore acquired');
 
       setTimeout(function() {
         semaphore.getA().release();
-        console.log((new Date()).toISOString() + ' - /sempaphore semaphore released');
-        console.log((new Date()).toISOString() + ' - /sempaphore end');
+        console.log((new Date()).toISOString() + ' - /get semaphore released');
+        console.log((new Date()).toISOString() + ' - /get end');
         res.render('semaphore', { title: 'Access controlled by semaphores' });
       }, MS_INSIDE_SEMAPHORE);
     });
